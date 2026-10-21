@@ -1,73 +1,135 @@
-# Welcome to your Lovable project
+# Distributed Lovable Clone — Frontend
 
-## Project info
+A React-based frontend for an AI-powered application development platform inspired by Lovable. This project provides a web interface for interacting with application projects and their files through backend APIs.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+## Overview
 
-## How can I edit this code?
+The frontend is built with React and TypeScript and uses Vite for development and production builds. It communicates with backend services through HTTP APIs.
 
-There are several ways of editing your application.
+The frontend and backend are deployed as separate Kubernetes Deployments within the same Google Kubernetes Engine (GKE) cluster.
 
-**Use Lovable**
+## Tech Stack
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+- **React** — User interface
+- **TypeScript** — Type-safe development
+- **Vite** — Frontend tooling and build process
+- **Tailwind CSS** — Styling
+- **shadcn/ui** — UI components
+- **Docker** — Containerization
+- **Nginx** — Production web server
+- **Google Kubernetes Engine (GKE)** — Container orchestration
 
-Changes made via Lovable will be committed automatically to this repo.
+## Architecture
 
-**Use your preferred IDE**
+```text
+User / Browser
+      |
+      v
+React + TypeScript Frontend
+      |
+      | HTTP API Requests
+      v
+Backend API
+      |
+      v
+Backend Services
+```
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+The frontend and backend run as separate Kubernetes Deployments in the same GKE cluster. The frontend communicates with the backend through its configured API endpoint.
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+## Deployment
 
-Follow these steps:
+The frontend is containerized using Docker and served through Nginx. It is deployed to GKE using Kubernetes manifests.
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+The frontend build uses the `VITE_API_URL` environment variable to configure the backend API endpoint.
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+Example:
 
-# Step 3: Install the necessary dependencies.
-npm i
+```env
+VITE_API_URL=http://api.vaibhavshahi.in
+```
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+Configure the appropriate API URL before building the production image. If the frontend is served over HTTPS, the API must also support HTTPS to avoid browser mixed-content restrictions.
+
+## Run Locally
+
+### Prerequisites
+
+- Node.js
+- npm
+- Access to the backend API
+
+### Install dependencies
+
+```bash
+npm install
+```
+
+### Configure the API
+
+Create a `.env` file in the project root:
+
+```env
+VITE_API_URL=http://api.vaibhavshahi.in
+```
+
+### Start the development server
+
+```bash
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+Open the local URL displayed in the terminal, typically `http://localhost:5173`.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+### Build for production
 
-**Use GitHub Codespaces**
+```bash
+npm run build
+```
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## Run with Docker
 
-## What technologies are used for this project?
+Build the image:
 
-This project is built with:
+```bash
+docker build -t lovable-frontend .
+```
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+Start the container:
 
-## How can I deploy this project?
+```bash
+docker run --rm -p 8080:80 lovable-frontend
+```
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+Open `http://localhost:8080` in your browser.
 
-## Can I connect a custom domain to my Lovable project?
+## Project Structure
 
-Yes, you can!
+```text
+src/
+├── components/
+│   └── ui/
+├── hooks/
+├── lib/
+├── pages/
+├── App.tsx
+└── main.tsx
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+public/
+Dockerfile
+package.json
+vite.config.ts
+```
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+- `components/` — Application and reusable UI components
+- `hooks/` — Custom React hooks
+- `lib/` — Utilities and API integration
+- `pages/` — Page-level components
+- `App.tsx` — Root application component
+- `main.tsx` — Application entry point
+
+## Author
+
+**Vaibhav Shahi**
+
+[GitHub Profile](https://github.com/vaibhavshahi10)
